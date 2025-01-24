@@ -1,0 +1,11 @@
+services:
+  todoapi:
+    build:
+      context: ./TodoApp
+      dockerfile: Dockerfile
+    ports:
+      - "5080:5080"
+    volumes:
+      - ./data:/app/data
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
