@@ -6,6 +6,9 @@ services:
     ports:
       - "5080:5080"
     volumes:
-      - ./Todo.db:/app/Todo.db
+      - todo_data:/app/data
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+
+volumes:
+  todo_data:
