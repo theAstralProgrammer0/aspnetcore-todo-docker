@@ -8,6 +8,10 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<TodoContext>(options => 
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(5080);
+});
 
 var app = builder.Build();
 
@@ -18,6 +22,7 @@ using (var scope = app.Services.CreateScope())
   try
   {
     var context = services.GetRequiredService<TodoContext>();
+    context.Database.EnsureDeleted();
     context.Database.Migrate();
     SeedData.Initialize(services);
   }

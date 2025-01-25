@@ -9,7 +9,8 @@ public static class SeedData
   {
     using var context = new TodoContext(
         serviceProvider.GetRequiredService<DbContextOptions<TodoContext>>());
-    if (context.TodoItems.Any()) return;
+    
+    if (context.TodoItems.Any()) return; // Db has been seeded
 
     context.TodoItems.AddRange(
         new TodoItem

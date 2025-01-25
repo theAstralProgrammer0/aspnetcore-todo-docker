@@ -1,19 +1,25 @@
-# State starting build and context
+# Base build image
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /app
+
+# Coppy project files
 COPY . .
 
-# Restore and Install dotnet-ef globally in build
-RUN dotnet restore     
-RUN dotnet tool install --global dotnet-ef
+# Restore dependencies
+RUN dotnet restore
 
-# Add .NET tools to PATH
+# Install dotnet-ef for migrations
+RUN dotnet tool install --global dotnet-ef
 ENV PATH="$PATH:/root/.dotnet/tools"
 
-# Publish build
+# Run migrations
+RUN dotnet ef migrations add InitialCreate --context TodoContext --output-dir Migrations
+RUN dotnet ef database update --context TodoContext
+
+# Publish the application
 RUN dotnet publish -c Release -o /out
 
-# Reuse Published build to run app
+# Runtime Image
 FROM mcr.microsoft.com/dotnet/aspnet:9.0
 WORKDIR /app
 COPY --from=build /out .
