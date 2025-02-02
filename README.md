@@ -7,6 +7,62 @@ Build and run a full-fledged ASP.NET Core Web API backend for a ToDo App using D
 - No local installations apart from Docker-related tools.
 - Development via CLI only, using Vim as the text editor.
 
+## To Use ```aspnetcore-todo-docker```
+
+### Step 1: Run docker-compose
+```bash
+docker-compose up --build
+```
+
+### Step 2: Query WebAPI endpoints
+1. **```GET``` all items in the ```todoItems``` table**
+```bash
+curl -X GET http://localhost:5080/api/todoItems/
+```
+
+2. **```GET``` a specific item in the ```todoItems``` table**
+```bash
+curl -X GET http://localhost:5080/api/todoItems/{id}
+```
+For instance:
+```bash
+curl -X GET http://localhost:5080/api/todoItems/{1}
+```
+OR
+```bash
+curl -X GET http://localhost:5080/api/todoItems/1
+```
+
+3. **```POST``` a new item in the ```todoItems``` table on the database**
+```bash
+curl -X POST -H "Content-type: application/json" \
+-d '{
+   id: 4,
+   name: 'New ToDo Item',
+   priority: 2,
+   isCompleted: false,
+   dueDate: "2023-10-26T18:30:00Z"
+}' http://localhost:5080/api/todoItems
+```
+
+4. **```UPDATE``` an existing item in the ```todoItems``` table on the database**
+```bash
+curl -X PUT -H "Content-type: application/json" \
+-d '{
+   id: 4,
+   name: 'Same ToDo Item',
+   description: 'Difference is there is now a description',
+   priority: 1,
+   isCompleted: false,
+   dueDate: "2027-10-26T11:44:55Z"
+}' http://localhost:5080/api/todoItems/4
+```
+
+5. **```DELETE``` an existing item from the ```todoItems``` table on the database**
+```bash
+curl -X DELETE http://localhost:5080/api/todoItems/4
+```
+
 ## Steps to Achieve the Goal
 
 ### Step 1: Set Up the Project Structure
